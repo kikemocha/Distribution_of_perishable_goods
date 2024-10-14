@@ -1,1 +1,15 @@
 # Plataforma de Distribución de Mercancías Perecederas
+
+NET PROMOTE SCORE
+
+Resources: 
+OpenStreetMap
+
+Referencias:
+- Route4me
+- upperinc.com
+
+
+Teorema de grafos
+
+Buscar en Kaggle
