@@ -1,8 +1,23 @@
 // src/components/Home.js
 import React, { useState }     from 'react';
+import { useCart } from '../Context/CartContext.tsx';
+import { Product } from "../types.ts"; 
 
 function PopUpProducts({ show, product, onClose }) {
     const [productCount, setProductCount] = useState(1);
+    const { dispatch } = useCart();
+
+    const addCarrito = (product: Product, quantity: number) => {
+        // Crear un nuevo objeto con userQuantity
+        const productToAdd = {
+          ...product,
+          userQuantity: quantity, // Asigna la cantidad que el usuario quiere comprar
+        };
+      
+        // Despachar la acción para agregar al carrito
+        dispatch({ type: 'ADD_TO_CART', product: productToAdd });
+        onClose(); // Cierra el popup después de agregar el producto
+    };
 
     if (!show) {
       return null;
@@ -38,7 +53,7 @@ function PopUpProducts({ show, product, onClose }) {
                     <div>
                         <div className='h-16 bg-gray-300 w-2/5 flex rounded-full mx-auto mt-full'>
                             <div
-                                className="border border-black rounded-s-full w-14 h-16 cursor-pointer text-7xl flex justify-center items-center hover:bg-gray-500"
+                                className="rounded-s-full w-14 h-16 cursor-pointer text-7xl flex justify-center items-center hover:bg-gray-500"
                                 onClick={() => {
                                     if (productCount > 0) setProductCount(productCount - 1);
                                 }}
@@ -56,7 +71,7 @@ function PopUpProducts({ show, product, onClose }) {
                             </div>
                             <div className='mx-auto text-3xl my-auto'>{productCount}</div>
                             <div
-                                className="border border-black rounded-e-full w-14 h-16 cursor-pointer text-7xl flex justify-center items-center hover:bg-gray-500"
+                                className="rounded-e-full w-14 h-16 cursor-pointer text-7xl flex justify-center items-center hover:bg-gray-500"
                                 onClick={() => {
                                     setProductCount(productCount + 1);
                                 }}
@@ -68,7 +83,10 @@ function PopUpProducts({ show, product, onClose }) {
                             </div>
                         </div>
                         <div className='flex justify-center mt-7'>
-                            <button className='bg-[#fcb831] py-2 px-4 rounded-full h-20 w-56 font-semibold' >
+                            <button 
+                                className='bg-[#fcb831] py-2 px-4 rounded-full h-20 w-56 font-semibold' 
+                                onClick={()=>{addCarrito(product, productCount )}}
+                                >
                                 AÑADIR AL CARRO
                             </button>
                         </div>
