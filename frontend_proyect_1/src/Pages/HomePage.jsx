@@ -9,7 +9,7 @@ function Home() {
   const [showPopUpProduct, setShowPopUpProduct] = useState(false);
   const [showCart, setShowCart] = useState(false);
 
-  const [showCartProduct, setShowCartProduct] = useState(true);
+  const [showCartProduct, setShowCartProduct] = useState(false);
   
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
