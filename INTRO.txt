@@ -1,1 +1,20 @@
 # Plataforma de Distribución de Mercancías Perecederas
+
+NET PROMOTE SCORE
+
+Resources: 
+OpenStreetMap
+
+Referencias:
+- Route4me
+- upperinc.com
+
+
+Teorema de grafos
+
+Buscar en Kaggle
+
+
+https://python-visualization.github.io/folium/latest/
+
+https://medium.com/pythons-gurus/mapping-with-python-drawing-points-and-routes-using-folium-e55595ffca0f
