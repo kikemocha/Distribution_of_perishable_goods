@@ -1,7 +1,7 @@
 // src/components/Home.js
 import React, { useState, useEffect }     from 'react';
 import { useCart } from '../Context/CartContext.tsx';
-import { Product } from "../types.ts"; 
+import { regions } from './regions.js';
 
 function CartProducts({ show, onClose }) {
     
@@ -63,19 +63,104 @@ function CartProducts({ show, onClose }) {
                         </svg>
                         <p className='ml-2'>Atrás</p>
                     </div>
-                    <div className='h-1/2 w-full bg-red-400 py-5 flex'>
-                        <div className='h-full w-1/2 rounded-3xl bg-slate-100 m-5'>
+                    <div className='h-1/3 w-full py-5 flex'>
+                        <div className='h-full w-1/2 rounded-3xl bg-slate-200 m-5'>
                             <div className='h-1/2 w-full pb-4 flex items-end justify-center '>
                                 <p className='text-4xl text-center '>TOTAL</p>  
                             </div>
                             <p className='h-1/2 w-full text-4xl text-center'>{total} €</p>
                         </div>
 
-                        <div className='h-full w-1/2 rounded-3xl bg-slate-100 m-5'>
-
+                        <div className='h-full w-1/2 p-5 rounded-3xl bg-slate-200 m-5'>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Nombre</label>
+                          <input
+                              type="text"
+                              className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                          />
+                          </div>
+                          <div>
+                          <label className="block text-sm font-medium text-gray-700">Apellidos</label>
+                          <input
+                              type="text"
+                              className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                          />
+                          </div>
                         </div>
                     </div>
-                    
+                    <div className='h-2/3 w-full py-5 px-5 pb-20'>
+                        <div className='bg-slate-200 p-5 w-full h-full rounded-3xl'>
+                        <div className="h-full space-y-4 flex flex-col justify-around">
+                          <div>
+                          <label className="block text-sm font-medium text-gray-700">Calle</label>
+                          <input
+                              type="text"
+                              className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                          />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Número</label>
+                                <input
+                                type="text"
+                                className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Piso</label>
+                                <input
+                                type="text"
+                                className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Puerta</label>
+                                <input
+                                type="text"
+                                className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                />
+                            </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Código Postal</label>
+                                    <input
+                                    type="text"
+                                    className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Ciudad</label>
+                                    <select
+                                        name="location"
+                                        className="w-full p-2 border rounded-lg bg-white text-black"
+                                    >
+                                    <option value="">Selecciona una ciudad</option>
+                                    {regions.map((region) => (
+                                        <optgroup key={region.name} label={region.name}>
+                                        {region.provinces.map((province) => (
+                                            <option key={province} value={province}>
+                                            {province}
+                                            </option>
+                                        ))}
+                                        </optgroup>
+                                    ))}
+                                    </select>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation(); // Detiene la propagación del evento click
+                            onClose();
+                          }}
+                        className='cursor-pointer mb-4 h-12 w-1/2 right-1/4 bg-green-500 absolute bottom-0 rounded-full flex items-center justify-center'>
+                            <p className='text-center cursor-pointer' >REALIZAR PEDIDO</p>
+                    </div>
                 </div>
             ):
             (
