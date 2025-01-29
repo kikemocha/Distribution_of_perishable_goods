@@ -182,18 +182,16 @@ def recalcular_rutas(rutas_totales):
         ruta["distancia"] = calcular_distancia(ruta["ruta"])  # Actualizar distancia
         ruta["carga"] = calcular_carga(ruta["ruta"])  # Actualizar carga
 
-# Ejecutamos la nueva distribución cooperativa
-rutas_totales, coste_total = distribuir_rutas_cooperativa()
 
-# Recalcular rutas para reducir costes
-recalcular_rutas(rutas_totales)
-
-rutas_finales = []
-for i,k in enumerate(rutas_totales):
-    k['vehicle'] = k.pop('vehiculo')
-    k['clientes'] = k.pop('ruta')
-    k['peso_total'] = k.pop('carga')
-    k['distancia_total'] = k.pop('distancia')
-    k['costo_total'] = k.pop('coste')
-    rutas_finales.append([i,k])
-print(rutas_finales)
+def hill_climbing():
+    rutas_totales, coste_total = distribuir_rutas_cooperativa()
+    rutas_finales = []
+    for i,k in enumerate(rutas_totales):
+        k['vehicle'] = k.pop('vehiculo')
+        k['clientes'] = k.pop('ruta')
+        k['peso_total'] = k.pop('carga')
+        k['distancia_total'] = k.pop('distancia')
+        k['costo_total'] = k.pop('coste')
+        rutas_finales.append([i,k])
+    
+    return rutas_finales

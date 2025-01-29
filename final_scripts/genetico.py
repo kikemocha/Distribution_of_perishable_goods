@@ -60,16 +60,6 @@ def check_viability_client(ruta):
             pass
     return True
 
-vehicles = []
-for _, row in pd.read_excel('df_vehicle.xlsx').iterrows():
-    vehicles.append(Vehicle(
-        id = int(row['vehiculo_id']), 
-        capacidad_kg= float(row['capacidad_kg']),
-        costo_km= float(row['costo_km']), 
-        autonomia_km= int(row['autonomia_km'])
-        ))
-
-vehiculos_2 = vehicles.copy()
 
 def create_route(clients):
     random.shuffle(clients)
@@ -80,16 +70,10 @@ def create_route(clients):
     return route
 
 
-clientes = []
-df_demandas = pd.read_csv('df_order.csv')
-
-for _, row in df_demandas.iterrows():
-    cliente = row['cliente']
-    order_demand = row['order_demand']
-    clientes.append(Client(cliente, order_demand))
 
 
-def generate_initial_solution(vehicles, route):
+
+def generate_initial_solution(vehicles, route, clientes):
     solucion = {}
     clients = [i.cliente for i in route]
     random.shuffle(clients)
@@ -152,7 +136,6 @@ def generate_initial_solution(vehicles, route):
         return 9999
 
 
-route = generate_initial_solution(vehicles=vehicles, route=create_route(clientes))
 
 
 def fitness(solution):
@@ -170,9 +153,6 @@ def create_population(clients, size):
         route = create_route(clients)
         population.append(route)
     return population
-
-population = create_population(clientes, 100)
-results = [fitness(generate_initial_solution(vehicles, i)) for i in population ]
 
 
 def selection(population, results, tournament_size=5):
@@ -201,12 +181,10 @@ def mutate(route, mutation_rate=0.1):
     else:
         return route_inicial
 
-best_routes = selection(population, results, tournament_size=5)
-new_route = mutate(crossover(best_routes))
 
 def genetic_algorithm(clients, vehicles, population_size=100, generations=200, mutation_rate=0.2):
     population = create_population(clients, population_size)
-    results = [fitness(generate_initial_solution(vehicles, i)) for i in population ]
+    results = [fitness(generate_initial_solution(vehicles=vehicles, route=i, clientes=clients)) for i in population ]
     routes = []
 
     for generation in range(generations):
@@ -221,7 +199,7 @@ def genetic_algorithm(clients, vehicles, population_size=100, generations=200, m
             new_population.append(child)
         
         for j in new_population:
-            route = generate_initial_solution(vehicles, j)
+            route = generate_initial_solution(vehicles, j, clients)
             route_value = fitness(route)
 
             new_results.append(route_value)
@@ -239,20 +217,28 @@ def genetic_algorithm(clients, vehicles, population_size=100, generations=200, m
     best_index = results.index(max(results))  # Seleccionar el mejor fitness
     
     return population[best_index], -results[best_index], routes[best_index]  # Retornar ruta y costo
-print(clientes, vehicles)
-best_population, best_cost, route = genetic_algorithm(clientes, vehicles, population_size=100, generations=1000, mutation_rate=0.2)
 
-print('\n\nMejor población: ', [i.cliente for i in best_population])
-print("Costo de la mejor ruta:", best_cost)
-print('Ruta final: ')
-print(f'Viable {check_viability_client([i.cliente for i in best_population])}')
-for i,k in route.items():
-    print(
-        f'\nVehículo = {i} \n Clientes: {k['clientes']}\n Distancia Total: {k['distancia_total']}\n Peso Total: {k['peso_total']}\n Costo Total: {k['costo_total']}'
-    )
 
-final_routes = []
-for i, k in enumerate(route):
-    route[k]['vehicle'] = k
-    final_routes.append([i,route[k]])
-print(final_routes)
+def algoritmo_genetico():
+    clientes = []
+    vehicles = []
+
+    for _, row in pd.read_excel('df_vehicle.xlsx').iterrows():
+        vehicles.append(Vehicle(
+            id = int(row['vehiculo_id']), 
+            capacidad_kg= float(row['capacidad_kg']),
+            costo_km= float(row['costo_km']), 
+            autonomia_km= int(row['autonomia_km'])
+            ))
+    
+    for _, row in pd.read_csv('df_order.csv').iterrows():
+        cliente = row['cliente']
+        order_demand = row['order_demand']
+        clientes.append(Client(cliente, order_demand))
+    
+    best_population, best_cost, route = genetic_algorithm(clientes, vehicles, population_size=100, generations=1000, mutation_rate=0.2)
+    final_routes = []
+    for i, k in enumerate(route):
+        route[k]['vehicle'] = k
+        final_routes.append([i,route[k]])
+    return(final_routes)
