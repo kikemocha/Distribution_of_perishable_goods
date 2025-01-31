@@ -160,10 +160,13 @@ def calc_cost_km(vehicle, route):
 
 
 def tabu_function():
-    rutas_finales = []
-    for i, ruta in enumerate(modelo_tabu['mejor_solucion']):
-        ruta = [df_location[(df_location['Latitud'] == cliente[0]) & (df_location['Longitud'] == cliente[1])]['Cliente'].iloc[0] for cliente in ruta]
-        cost, km, peso_total = calc_cost_km(i+1, ruta)
-        rutas_finales.append([i, {'vehicle': i+1,'clientes': ruta, 'distancia_total': km, 'peso_total': peso_total, 'costo_total': cost}])
-    return rutas_finales
+    try:
+        rutas_finales = []
+        for i, ruta in enumerate(modelo_tabu['mejor_solucion']):
+            ruta = [df_location[(df_location['Latitud'] == cliente[0]) & (df_location['Longitud'] == cliente[1])]['Cliente'].iloc[0] for cliente in ruta]
+            cost, km, peso_total = calc_cost_km(i+1, ruta)
+            rutas_finales.append([i, {'vehicle': i+1,'clientes': ruta, 'distancia_total': km, 'peso_total': peso_total, 'costo_total': cost}])
+        return rutas_finales
+    except Exception as e:
+        return e
 

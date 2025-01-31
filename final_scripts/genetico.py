@@ -128,8 +128,8 @@ def generate_initial_solution(vehicles, route, clientes):
             solucion[vehiculo.id]['costo_total'] += round(vehiculo.costo_km * distancia_actual,2)
             if distancia_regreso<=vehiculo.autonomia_km:
                 distancia_actual += distancia_regreso
-            #else:
-            #    route_vehicles.remove(vehiculo)
+            else:
+                route_vehicles.remove(vehiculo)
     if check_viability_client([cliente for sublista in [k['clientes'] for i,k in solucion.items()] for cliente in sublista]) : 
         return(solucion)
     else:
@@ -211,7 +211,7 @@ def genetic_algorithm(clients, vehicles, population_size=100, generations=200, m
 
         # Mejor solución en la generación actual
         best_cost = min([i for i in results if i != -9999])
-        #print(f"Generación {generation}: Mejor costo: {-best_cost}")  # Invertir para mostrar el costo original
+        print(f"Generación {generation}: Mejor costo: {-best_cost}")  # Invertir para mostrar el costo original
     
     # Mejor solución final
     best_index = results.index(max(results))  # Seleccionar el mejor fitness

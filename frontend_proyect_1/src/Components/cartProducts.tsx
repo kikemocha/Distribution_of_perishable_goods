@@ -8,31 +8,111 @@ function CartProducts({ show, onClose }) {
     const { state } = useCart();
     const [endOrder, setEndOrder] = useState(false);
     
-    useEffect(() => {
-        if (show) {
-          document.body.style.overflow = 'hidden'; // Disable scroll
-        } else {
-          document.body.style.overflow = 'auto'; // Enable scroll
+    const [formData, setFormData] = useState({
+        name: "",
+        surname: "",
+        street: "",
+        number: "",
+        floor: "",
+        door: "",
+        postalCode: "",
+        city: ""
+    });
+
+    const getCoordinates = async () => {
+        const address = `${formData.street} ${formData.number}, ${formData.city}, ${formData.postalCode}, España`;
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+    
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.length > 0) {
+                return { latitude: parseFloat(data[0].lat), longitude: parseFloat(data[0].lon) };
+            } else {
+                console.error("No se encontraron coordenadas para la dirección proporcionada.");
+                return null;
+            }
+        } catch (error) {
+            console.error("Error al obtener las coordenadas:", error);
+            return null;
         }
-        // Cleanup function to restore scroll when the component is unmounted or show changes
-        return () => {
-          document.body.style.overflow = 'auto';
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({ ...prevState, [name]: value }));
+    };
+    
+    const handleOrderSubmit = async () => {
+        const coordinates = await getCoordinates();
+        if (!coordinates) {
+            alert("No se pudo obtener la ubicación. Verifica la dirección.");
+            return;
+        }
+        const updatedClienteName = `${formData.name.trim()}${formData.surname.trim()}`;
+    
+        const clienteData = {
+            name: updatedClienteName,
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude
         };
-      }, [show]);
-
-    if (!show) {
-      return null;
-    }
-
+    
+        try {
+            // 1️⃣ Crear Cliente en el backend
+            const clienteResponse = await fetch("http://127.0.0.1:8000/api/clientes/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(clienteData)
+            });
+    
+            if (!clienteResponse.ok) throw new Error("Error al crear el cliente");
+    
+            const cliente = await clienteResponse.json(); // Recibir respuesta con ID del cliente
+            console.log("Cliente creado:", cliente);
+    
+            // 2️⃣ Crear Orden asociada al Cliente
+            const orderData = {
+                cliente: cliente.id, // Usar el ID del cliente recién creado
+                mes_anio: "02-2025",
+                quantity_kg: 10 * state.products.length,
+            };
+    
+            console.log('orderData: ', orderData);
+            const orderResponse = await fetch("http://127.0.0.1:8000/api/orders/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(orderData)
+            });
+    
+            if (!orderResponse.ok) throw new Error("Error al crear la orden");
+    
+            const order = await orderResponse.json();
+            console.log("Orden creada:", order);
+    
+            alert("Pedido realizado con éxito");
+            onClose(); // Cerrar modal después de la orden
+    
+        } catch (error) {
+            console.error("Error en el proceso de pedido:", error);
+            alert("Hubo un problema al procesar el pedido.");
+        }
+    };
+    
+    
+    useEffect(() => {
+        document.body.style.overflow = show ? 'hidden' : 'auto';
+        return () => { document.body.style.overflow = 'auto'; };
+    }, [show]);
+    
+    if (!show) return null;
+    
     const total = parseFloat(
         state.products.reduce((sum, product) => {
-          const price = product.price_with_discount ?? product.real_price ?? 0;
-          const quantity = product.userQuantity ?? 0;
-          return sum + price * quantity;
+            const price = product.price_with_discount ?? product.real_price ?? 0;
+            return sum + price * (product.userQuantity ?? 0);
         }, 0).toFixed(2)
-      );
-
-
+    );
     return (
         <div 
           className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40 flex items-center justify-center"
@@ -76,14 +156,20 @@ function CartProducts({ show, onClose }) {
                           <label className="block text-sm font-medium text-gray-700">Nombre</label>
                           <input
                               type="text"
+                              name="name" 
                               className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                              value={formData.name}
+                              onChange={handleChange}
                           />
                           </div>
                           <div>
                           <label className="block text-sm font-medium text-gray-700">Apellidos</label>
                           <input
                               type="text"
+                              name="surname" 
                               className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                              value={formData.surname}
+                              onChange={handleChange}
                           />
                           </div>
                         </div>
@@ -96,6 +182,7 @@ function CartProducts({ show, onClose }) {
                           <input
                               type="text"
                               className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                              onChange={handleChange}
                           />
                           </div>
 
@@ -105,6 +192,7 @@ function CartProducts({ show, onClose }) {
                                 <input
                                 type="text"
                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                onChange={handleChange}
                                 />
                             </div>
                             <div>
@@ -112,6 +200,7 @@ function CartProducts({ show, onClose }) {
                                 <input
                                 type="text"
                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                onChange={handleChange}
                                 />
                             </div>
                             <div>
@@ -119,6 +208,7 @@ function CartProducts({ show, onClose }) {
                                 <input
                                 type="text"
                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                onChange={handleChange}
                                 />
                             </div>
                             </div>
@@ -129,6 +219,7 @@ function CartProducts({ show, onClose }) {
                                     <input
                                     type="text"
                                     className="mt-1 block w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-400 focus:outline-none"
+                                    onChange={handleChange}
                                     />
                                 </div>
                                 <div>
@@ -154,10 +245,7 @@ function CartProducts({ show, onClose }) {
                         </div>
                     </div>
                     <div
-                        onClick={(e) => {
-                            e.stopPropagation(); // Detiene la propagación del evento click
-                            onClose();
-                          }}
+                        onClick={handleOrderSubmit}
                         className='cursor-pointer mb-4 h-12 w-1/2 right-1/4 bg-green-500 absolute bottom-0 rounded-full flex items-center justify-center'>
                             <p className='text-center cursor-pointer' >REALIZAR PEDIDO</p>
                     </div>
