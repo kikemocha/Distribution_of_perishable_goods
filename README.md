@@ -52,7 +52,7 @@ El sistema está desarrollado con una arquitectura moderna que incluye una base 
 
 - **Frontend**:
   - **Framework**: React.js
-  - **Herramientas de Visualización**: Chart.js, Leaflet.js (para mapas)
+  - **Herramientas de Visualización**: Chart.js, Openlayers (para mapas)
 
 - **Modelos de Machine Learning**:
   - TensorFlow, Scikit-learn, Pandas, NumPy
@@ -77,6 +77,7 @@ El sistema está desarrollado con una arquitectura moderna que incluye una base 
     git clone https://github.com/kikemocha/Distribution_of_perishable_goods.git
     cd backend
     ```
+
 2. **Crear y Activar el Entorno Virtual:**
 
      ```bash
@@ -104,3 +105,148 @@ El sistema está desarrollado con una arquitectura moderna que incluye una base 
     python manage.py runserver
     ```
 
+### Frontend (React.js)
+
+1. **Navegar al Directorio del Frontend:**
+
+   ```bash
+    cd frontend
+    ```
+    
+2. **Instalar Dependencias:**
+
+     ```bash
+    npm install
+    ```  
+
+3. **Iniciar el Servidor de Desarrollo:**
+    ```bash
+    npm start
+    ```
+
+---
+
+## Estructura del Proyecto
+
+```bash
+    /backend_proyect_1
+    │
+    ├── cart
+    │   ├── __pycache__
+    │   ├── migrations
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── tests.py
+    │   └── views.py
+    │
+    ├── orders
+    │   ├── __pycache__
+    │   ├── migrations
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── serializers.py
+    │   ├── tests.py
+    │   └── views.py
+    │
+    ├── products
+    │   ├── __pycache__
+    │   ├── migrations
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── insert_data.py
+    │   ├── models.py
+    │   ├── serializers.py
+    │   ├── tests.py
+    │   └── views.py
+    │
+    ├── vehicles
+    │   ├── __pycache__
+    │   ├── migrations
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── serializers.py
+    │   ├── tests.py
+    │   ├── urls.py
+    │   └── views.py
+    │
+    ├── manage.py
+    │── settings.py    
+    │
+    ├── /datasets
+    │    ├── df_distance_km.xlsx
+    │    ├── df_distance_min.xlsx
+    │    ├── df_historic_order_demand.xlsx
+    │    ├── df_location.xlsx
+    │    ├── df_orders.xlsx
+    │    └── df_vehicle.xlsx
+    │
+    final_scripts/
+    │   ├──caso2.txt
+    │   ├──df_distance_km.xlsx
+    │   ├──df_location.xlsx
+    │   ├──df_order.csv
+    │   ├──df_vehicle.xlsx
+    │   ├──genetico.py
+    │   ├──hill_climbing.py
+    │   ├──main.py
+    │   ├──tabu.py
+    │
+    │───__pycache__/
+    │
+    frontend_proyect_1/
+    │   .gitignore
+    │   package-lock.json
+    │   package.json
+    │   README.md
+    │   tailwind.config.js
+    │
+    ├───public/
+    │
+    ├───src/
+    │   ├──App.css
+    │   ├──App.js
+    │   ├──App.test.js
+    │   ├──index.css
+    │   ├──index.js
+    │   ├──reportWebVitals.js
+    │   ├──setupTests.js
+    │   ├──types.ts
+    │   │
+    │   ├───Components/
+    │   │   ├──cartProducts.tsx
+    │   │   ├──ProductPopUp.tsx
+    │   │   ├──Products.jsx
+    │   │   ├──regions.js
+    │   │
+    │   ├───Context/
+    │   │   ├──CartContext.tsx
+    │   │
+    │   ├───Pages/
+    │   │   ├──AdminPage.jsx
+    │   │   ├──HomePage.jsx
+    │   │   ├──VehiclesForm.jsx
+
+```
+
+---
+
+## Uso del sistema
+
+### Optimización de Rutas
+
+1. Ingresa los puntos de origen y destino en la interfaz de React.
+2. Configura restricciones adicionales (horarios, capacidades de vehículos).
+3. Genera y visualiza la ruta recomendada en el mapa interactivo.
+
+### Predicción de Pedidos
+
+1. Sube o carga datos históricos de ventas desde la interfaz.
+2. Selecciona el período futuro a predecir.
+3. Ver los resultados en formato tabular y gráfico.
