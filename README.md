@@ -7,11 +7,6 @@
 4. [Instalación](#instalación)
 5. [Estructura del Proyecto](#estructura-del-proyecto)
 6. [Uso del Sistema](#uso-del-sistema)
-7. [Datos y Modelos](#datos-y-modelos)
-8. [Contribuciones](#contribuciones)
-9. [Licencia](#licencia)
-10. [Contacto](#contacto)
-
 ---
 
 ## Descripción del Proyecto
