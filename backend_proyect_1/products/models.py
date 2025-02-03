@@ -10,7 +10,7 @@ class Product(models.Model):
     price_with_discount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     price_before_discount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     real_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    quantity = models.CharField(max_length=50)  # Ej: "/ud.", puede ser un CharField si tiene texto específico
+    quantity = models.CharField(max_length=50)
     img = models.URLField()
 
     def __str__(self):
