@@ -1,0 +1,177 @@
+Con Todos los vehiculos:
+ vehiculo_id  capacidad_kg  costo_km  autonomia_km
+0            1          2026      0.20           603
+1            2          4362      0.14           630
+2            3          4881      0.20           664
+3            4          3321      0.19           514
+4            5         10000      0.32           350
+5            6          3129      0.14           791
+
+Hill Climbing:
+Nº RUTA: 0
+Vehículo: 6
+Ruta: ['Almacén', 'cliente_6', 'cliente_4', 'cliente_5', 'Almacén']
+Peso Total: 2754
+Distancia Total: 13.2209
+Costo Total: 1.8509260000000003
+
+Nº RUTA: 1
+Vehículo: 6
+Ruta: ['Almacén', 'cliente_10', 'cliente_12', 'cliente_11', 'Almacén']
+Peso Total: 2710
+Distancia Total: 17.7542
+Costo Total: 2.4855880000000004
+
+Nº RUTA: 2
+Vehículo: 6
+Ruta: ['Almacén', 'cliente_3', 'cliente_2', 'cliente_1', 'Almacén']
+Peso Total: 2676
+Distancia Total: 28.4598
+Costo Total: 3.9843720000000005
+
+Nº RUTA: 3
+Vehículo: 1
+Ruta: ['Almacén', 'cliente_13', 'cliente_9', 'Almacén']
+Peso Total: 1800
+Distancia Total: 16.761799999999997
+Costo Total: 3.3523599999999996
+
+Nº RUTA: 4
+Vehículo: 6
+Ruta: ['Almacén', 'cliente_14', 'cliente_8', 'cliente_7', 'Almacén']
+Peso Total: 2741
+Distancia Total: 43.810199999999995
+Costo Total: 6.133427999999999
+
+Nº RUTA: 5
+Vehículo: 3
+Ruta: ['Almacén', 'cliente_20', 'Almacén']
+Peso Total: 923
+Distancia Total: 29.6564
+Costo Total: 5.931280000000001
+
+Nº RUTA: 6
+Vehículo: 2
+Ruta: ['Almacén', 'cliente_17', 'cliente_18', 'cliente_15', 'cliente_16', 'Almacén']
+Peso Total: 3626
+Distancia Total: 43.27929999999999
+Costo Total: 6.059101999999999
+
+Nº RUTA: 7
+Vehículo: 2
+Ruta: ['Almacén', 'cliente_19', 'Almacén']
+Peso Total: 852
+Distancia Total: 44.0736
+Costo Total: 6.170304000000001
+
+
+
+Tabú: 
+Nº RUTA: 0
+Vehículo: 1
+Ruta: ['Almacén', 'Cliente_11', 'Cliente_14', 'Almacén']
+Peso Total: 1765
+Distancia Total: 8.55
+Costo Total: 1.71
+
+Nº RUTA: 1
+Vehículo: 2
+Ruta: ['Almacén', 'Cliente_9', 'Cliente_17', 'Cliente_5', 'Cliente_20', 'Almacén']
+Peso Total: 3617
+Distancia Total: 56.52
+Costo Total: 7.91
+
+Nº RUTA: 2
+Vehículo: 3
+Ruta: ['Almacén', 'Cliente_7', 'Cliente_2', 'Cliente_3', 'Cliente_19', 'Cliente_13', 'Almacén']
+Peso Total: 4510
+Distancia Total: 43.0
+Costo Total: 8.6
+
+Nº RUTA: 3
+Vehículo: 4
+Ruta: ['Almacén', 'Cliente_16', 'Cliente_4', 'Cliente_6', 'Almacén']
+Peso Total: 2764
+Distancia Total: 9.08
+Costo Total: 1.72
+
+Nº RUTA: 4
+Vehículo: 5
+Ruta: ['Almacén', 'Cliente_12', 'Cliente_15', 'Cliente_8', 'Cliente_18', 'Cliente_10', 'Cliente_1', 'Almacén']
+Peso Total: 5426
+Distancia Total: 43.03
+Costo Total: 13.77
+
+
+
+Genético: 
+Nº RUTA: 0
+Vehículo: 2
+Ruta: ['Cliente_20', 'Cliente_9', 'Cliente_17', 'Cliente_5']
+Peso Total: 3617
+Distancia Total: 57.39
+Costo Total: 8.03
+
+Nº RUTA: 1
+Vehículo: 5
+Ruta: ['Cliente_11', 'Cliente_14', 'Cliente_1', 'Cliente_16', 'Cliente_13', 'Cliente_2', 'Cliente_7', 'Cliente_10', 'Cliente_4', 'Cliente_6']
+Peso Total: 9089
+Distancia Total: 34.33
+Costo Total: 10.98
+
+Nº RUTA: 2
+Vehículo: 6
+Ruta: ['Cliente_12', 'Cliente_8', 'Cliente_15']
+Peso Total: 2759
+Distancia Total: 45.47
+Costo Total: 6.37
+
+Nº RUTA: 3
+Vehículo: 3
+Ruta: ['Cliente_18', 'Cliente_3', 'Cliente_19']
+Peso Total: 2617
+Distancia Total: 39.06
+Costo Total: 7.81
+
+
+
+Con la mitad de los vehiculos:
+
+   vehiculo_id  capacidad_kg  costo_km  autonomia_km
+0            1          2026      0.20           603
+1            3          4881      0.20           664
+2            5         10000      0.32           350
+
+
+(base) kike@kike-ASUS-TUF-Dash-F15-FX516PR-FX516PR:~/Desktop/codes/master/Proyecto1/final_scripts$ python3 tabu.py 
+Traceback (most recent call last):
+  File "/home/kike/Desktop/codes/master/Proyecto1/final_scripts/tabu.py", line 114, in <module>
+    initial_routes = generate_valid_initial_routes(distances_matrix, num_vehicle, almacen, demandas, capacidades)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kike/Desktop/codes/master/Proyecto1/final_scripts/tabu.py", line 38, in generate_valid_initial_routes
+    if sum(demandas[r] for r in route) + demandas[cliente] <= capacidades[routes.index(route)]:
+                                                              ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+
+(base) kike@kike-ASUS-TUF-Dash-F15-FX516PR-FX516PR:~/Desktop/codes/master/Proyecto1/final_scripts$ python3 genetico.py 
+Traceback (most recent call last):
+  File "/home/kike/Desktop/codes/master/Proyecto1/final_scripts/genetico.py", line 246, in <module>
+    print(algoritmo_genetico())
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/home/kike/Desktop/codes/master/Proyecto1/final_scripts/genetico.py", line 239, in algoritmo_genetico
+    best_population, best_cost, route = genetic_algorithm(clientes, vehicles, population_size=100, generations=1000, mutation_rate=0.2)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kike/Desktop/codes/master/Proyecto1/final_scripts/genetico.py", line 187, in genetic_algorithm
+    results = [fitness(generate_initial_solution(vehicles=vehicles, route=i, clientes=clients)) for i in population ]
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kike/Desktop/codes/master/Proyecto1/final_scripts/genetico.py", line 90, in generate_initial_solution
+    vehiculo = random.choice(route_vehicles)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kike/miniconda3/lib/python3.12/random.py", line 347, in choice
+    raise IndexError('Cannot choose from an empty sequence')
+IndexError: Cannot choose from an empty sequence
+
+(base) kike@kike-ASUS-TUF-Dash-F15-FX516PR-FX516PR:~/Desktop/codes/master/Proyecto1/final_scripts$ python3 hill_climbing.py 
+[[0, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_5', 'cliente_6', 'Almacén'], 'peso_total': 1805, 'distancia_total': 12.055599999999998, 'costo_total': 2.41112}], [1, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_9', 'cliente_10', 'Almacén'], 'peso_total': 1779, 'distancia_total': 13.8689, 'costo_total': 2.7737800000000004}], [2, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_12', 'cliente_11', 'Almacén'], 'peso_total': 1787, 'distancia_total': 19.7339, 'costo_total': 3.94678}], [3, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_2', 'cliente_1', 'Almacén'], 'peso_total': 1798, 'distancia_total': 21.91, 'costo_total': 4.382000000000001}], [4, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_13', 'cliente_14', 'Almacén'], 'peso_total': 1848, 'distancia_total': 22.090899999999998, 'costo_total': 4.4181799999999996}], [5, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_3', 'cliente_4', 'Almacén'], 'peso_total': 1827, 'distancia_total': 29.813200000000002, 'costo_total': 5.96264}], [6, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_15', 'cliente_16', 'Almacén'], 'peso_total': 1833, 'distancia_total': 30.3785, 'costo_total': 6.0757}], [7, {'vehicle': 3, 'clientes': ['Almacén', 'cliente_20', 'Almacén'], 'peso_total': 923, 'distancia_total': 29.6564, 'costo_total': 5.931280000000001}], [8, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_17', 'cliente_18', 'Almacén'], 'peso_total': 1793, 'distancia_total': 36.614999999999995, 'costo_total': 7.3229999999999995}], [9, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_19', 'Almacén'], 'peso_total': 852, 'distancia_total': 44.0736, 'costo_total': 8.81472}], [10, {'vehicle': 1, 'clientes': ['Almacén', 'cliente_8', 'cliente_7', 'Almacén'], 'peso_total': 1837, 'distancia_total': 45.7876, 'costo_total': 9.15752}]]
+(base) kike@kike-ASUS-TUF-Dash-F15-FX516PR-FX516PR:~/Desktop/codes/master/Proyecto1/final_scripts$ 
+
