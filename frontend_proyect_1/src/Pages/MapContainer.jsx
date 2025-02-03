@@ -12,21 +12,21 @@ import Stroke from "ol/style/Stroke";
 import Style from "ol/style/Style";
 import axios from "axios";
 
-const ORS_API_KEY = "TU_API_KEY_AQUI"; // Reemplázala con tu clave de OpenRouteService
+const ORS_API_KEY = "5b3ce3597851110001cf6248228c2c8d82c74e7d8a4186da6489a320"; // Reemplaza con tu clave de OpenRouteService
 
 const generateRandomCoords = () => {
-  const minLat = 40.35; // Sur de Madrid
-  const maxLat = 40.55; // Norte de Madrid
-  const minLon = -3.85; // Oeste de Madrid
-  const maxLon = -3.55; // Este de Madrid
+  const minLat = 40.35;
+  const maxLat = 40.55;
+  const minLon = -3.85;
+  const maxLon = -3.55;
 
   const start = [
-    (Math.random() * (maxLon - minLon)) + minLon,
-    (Math.random() * (maxLat - minLat)) + minLat
+    Math.random() * (maxLon - minLon) + minLon,
+    Math.random() * (maxLat - minLat) + minLat,
   ];
   const end = [
-    (Math.random() * (maxLon - minLon)) + minLon,
-    (Math.random() * (maxLat - minLat)) + minLat
+    Math.random() * (maxLon - minLon) + minLon,
+    Math.random() * (maxLat - minLat) + minLat,
   ];
 
   return [start, end];
@@ -44,7 +44,7 @@ const MapContainer = () => {
     try {
       const response = await axios.get(url);
       const route = response.data.features[0].geometry.coordinates;
-      setRouteCoords(route.map(coord => [coord[0], coord[1]])); // Mantiene el formato Lon, Lat
+      setRouteCoords(route.map(coord => [coord[0], coord[1]]));
     } catch (error) {
       console.error("Error al obtener la ruta:", error);
     }
@@ -68,7 +68,7 @@ const MapContainer = () => {
       }
 
       if (routeCoords.length > 1) {
-        const transformedCoords = routeCoords.map(coord => fromLonLat(coord));
+        const transformedCoords = routeCoords.map((coord) => fromLonLat(coord));
 
         const routeFeature = new Feature({
           geometry: new LineString(transformedCoords),
@@ -96,12 +96,17 @@ const MapContainer = () => {
 
   return (
     <div className="w-full h-full relative">
-      <button
-        onClick={fetchRoute}
-        className="absolute top-2 right-2 bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Nueva Ruta
-      </button>
+      {/* Contenedor del botón para asegurarse de que se muestra correctamente */}
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          onClick={fetchRoute}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg shadow-md transition duration-300"
+        >
+          Nueva Ruta
+        </button>
+      </div>
+
+      {/* Mapa */}
       <div ref={mapRef} className="w-full h-full" />
     </div>
   );
