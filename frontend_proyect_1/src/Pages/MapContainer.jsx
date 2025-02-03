@@ -100,8 +100,7 @@ const MapContainer = () => {
       <div className="absolute top-4 right-4 z-10">
         <button
           onClick={fetchRoute}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg shadow-md transition duration-300"
-        >
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg shadow-md transition duration-300">
           Nueva Ruta
         </button>
       </div>
