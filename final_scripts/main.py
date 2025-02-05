@@ -16,7 +16,7 @@ def formatear_texto_tabu(texto):
     print(f'Nº RUTA: {texto[0]}')
     print(f"Vehículo: {texto[1]['vehicle']}")
     print(f"Ruta: {texto[1]['clientes']}")
-    print(f"Distancia Total: {texto[1]['distancia_total']}")
+    print(f"Distancia Total: {texto[1]['distancia_total']} km")
     print(f"Costo Total: {texto[1]['costo_total']} €")
     print()
     

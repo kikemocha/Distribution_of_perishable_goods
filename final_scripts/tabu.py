@@ -97,24 +97,47 @@ def tabu_search_multiple_tsp(distance_matrix, initial_routes, max_iterations, ta
     return best_routes, best_distance
 
 # Función encargada de generar el resumen de las rutas
-def generate_route_summary(routes, clients_names, distance_matrix, costes, num_vehicles):
-    summary = []
+def optimizar_asignacion_vehiculos(rutas, nombres_clientes, matriz_distancias, df_vehicle):
+    resumen_optimizado = []
+    costos_vehiculos = df_vehicle['costo_km'].to_list()
+    autonomias_vehiculos = df_vehicle['autonomia_km'].to_list()
+    num_vehiculos = df_vehicle.shape[0] - 1
+    
+    # Crear una copia mutable de la autonomía de cada vehículo
+    autonomia_disponible = autonomias_vehiculos.copy()
 
-    for i, route in enumerate(routes):
-        clientes = [clients_names[client] for client in route]
-        distancia_total = sum(distance_matrix[route[j]][route[j+1]] for j in range(len(route) - 1))
-        costo_total = distancia_total * costes[i % num_vehicles]
-        vehicle = (i % num_vehicles) + 1
-        route_info = {
-            "clientes": clientes,
+    for indice_ruta, ruta in enumerate(rutas):
+        lista_clientes = [nombres_clientes[cliente] for cliente in ruta]
+        distancia_total = sum(matriz_distancias[ruta[i]][ruta[i+1]] for i in range(len(ruta) - 1))
+        mejor_vehiculo = None
+        menor_costo = float('inf')
+
+        for vehiculo_id in range(num_vehiculos):
+            if distancia_total <= autonomia_disponible[vehiculo_id]:
+                costo_total = distancia_total * costos_vehiculos[vehiculo_id]
+                if costo_total < menor_costo:
+                    menor_costo = costo_total
+                    mejor_vehiculo = vehiculo_id + 1
+
+        if mejor_vehiculo is None:
+            mejor_vehiculo = "No asignado"
+            menor_costo = float('inf')
+        else:
+            autonomia_disponible[mejor_vehiculo - 1] -= distancia_total
+
+        detalles_ruta = {
+            "clientes": lista_clientes,
             "distancia_total": round(distancia_total, 2),
-            "costo_total": round(costo_total, 2),
-            "vehicle": vehicle
+            "costo_total": round(menor_costo, 2),
+            "vehicle": mejor_vehiculo,
+            "autonomia_restante": autonomia_disponible[mejor_vehiculo - 1] if mejor_vehiculo != "No asignado" else "N/A"
         }
 
-        summary.append([i, route_info])
+        # Agregar a la lista final
+        resumen_optimizado.append([indice_ruta, detalles_ruta])
 
-    return summary
+    return resumen_optimizado
+
 
 # Función principal de Tabú Search
 def tabu_search():
@@ -125,14 +148,11 @@ def tabu_search():
     df_orders = pd.read_csv('df_order.csv')
 
     clients_names = df_location['cliente'].to_list()
-    clients_coords = df_location[['Latitud','Longitud']].to_numpy()
-
-    clients = {name: coord for name, coord in zip(clients_names, clients_coords)}
 
     distances_matrix = df_distance.to_numpy()
 
     almacen = len(clients_names) - 1
-    num_vehicle = 5
+    num_vehicle = df_vehicle.shape[0] - 1
     costes = df_vehicle['costo_km'].to_list()
     capacidades = df_vehicle['capacidad_kg'].to_list()
     demandas_dict = dict(zip(df_orders["cliente"], df_orders["order_demand"]))
@@ -140,24 +160,21 @@ def tabu_search():
 
     initial_routes = generate_valid_initial_routes(distances_matrix, num_vehicle, almacen, demandas, capacidades)
 
-    # Parámetros iniciales
     max_iterations = 1000
-    tabu_size = 10  # Tamaño de la lista Tabú
-    max_no_improve = 200  # Número máximo de iteraciones sin mejora
+    tabu_size = 10 
+    max_no_improve = 200
 
-    # Ejecutar Tabu Search
-    mejor_solucion, costo_mejor_solucion = tabu_search_multiple_tsp(
-        distances_matrix, initial_routes, max_iterations, tabu_size, almacen, costes, demandas, capacidades, max_no_improve=max_no_improve
-    )
-
-    # Generar la salida estructurada
-    resumen_rutas = generate_route_summary(mejor_solucion, clients_names, distances_matrix, costes, num_vehicle)
-
+    mejor_solucion, costo_mejor_solucion = tabu_search_multiple_tsp(distances_matrix, initial_routes, max_iterations, tabu_size, almacen, costes, demandas, capacidades, max_no_improve=max_no_improve)
+    resumen_rutas = optimizar_asignacion_vehiculos(mejor_solucion, clients_names, distances_matrix, df_vehicle)
     modelo_tabu = {
         "rutas": resumen_rutas,
         "costo_total": round(costo_mejor_solucion, 2)
     }
-
     return modelo_tabu
+
+
+if __name__ == "__main__":
+    print(tabu_search())
+
 
 
