@@ -124,6 +124,7 @@ def optimizar_asignacion_vehiculos(rutas, nombres_clientes, matriz_distancias, d
             menor_costo = float('inf')
         else:
             autonomia_disponible[mejor_vehiculo - 1] -= distancia_total
+            print(f"Autonomía restante del vehículo {mejor_vehiculo}: {autonomia_disponible[mejor_vehiculo - 1]} km")
 
         detalles_ruta = {
             "clientes": lista_clientes,
