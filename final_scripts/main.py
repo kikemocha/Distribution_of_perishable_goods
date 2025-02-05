@@ -1,6 +1,6 @@
 from genetico import algoritmo_genetico
 from hill_climbing import hill_climbing
-from tabu import tabu_function
+from tabu import tabu_search
 import pandas as pd
 
 def formatear_texto(texto):
@@ -9,7 +9,15 @@ def formatear_texto(texto):
     print(f"Ruta: {texto[1]['clientes']}")
     print(f"Peso Total: {texto[1]['peso_total']}")
     print(f"Distancia Total: {texto[1]['distancia_total']}")
-    print(f"Costo Total: {texto[1]['costo_total']}")
+    print(f"Costo Total: {texto[1]['costo_total']} €")
+    print()
+
+def formatear_texto_tabu(texto):
+    print(f'Nº RUTA: {texto[0]}')
+    print(f"Vehículo: {texto[1]['vehicle']}")
+    print(f"Ruta: {texto[1]['clientes']}")
+    print(f"Distancia Total: {texto[1]['distancia_total']}")
+    print(f"Costo Total: {texto[1]['costo_total']} €")
     print()
     
 df_vechicle = pd.read_excel('df_vehicle.xlsx')
@@ -19,7 +27,8 @@ print()
 try:
     result1 = algoritmo_genetico()
     print('Algorítmo Genético:')
-    for ruta in result1:
+    print(result1)
+    for ruta in result1:   
         formatear_texto(ruta)
     print()
 except:
@@ -33,12 +42,13 @@ try:
 except:
     print('Hill Climbing no se pudo')
 try:
-    result3 = tabu_function()
+    result3 = tabu_search()
     print('Tabú Search:')
-    for ruta in result3:
-        formatear_texto(ruta)
+    for ruta in result3['rutas']:
+        formatear_texto_tabu(ruta)
     print()
-except:
-    print('Tabú Search no se pudo')
+    print('Costo Total Tabu Search:', result3['costo_total'])
+except Exception as e:   
+    print('Tabú Search no se pudo', e)
 
 
