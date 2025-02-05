@@ -174,8 +174,4 @@ def tabu_search():
     return modelo_tabu
 
 
-if __name__ == "__main__":
-    print(tabu_search())
-
-
 
